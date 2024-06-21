@@ -24,7 +24,7 @@ jobs:
 
     - run: yarn run
 
-    -name: Generate tag
+    - name: Generate tag
       id: generate_tag
       run: |
         SHA=$(echo $GITHUB_SHA | head -c7)
