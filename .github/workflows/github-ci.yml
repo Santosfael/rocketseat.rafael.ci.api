@@ -27,7 +27,7 @@ jobs:
         node-version: 18
         cache: 'yarn'
 
-    - run: yarn run
+    - run: yarn
 
     - name: Semantic release
       uses: cycjimmy/semantic-release-action@v4
