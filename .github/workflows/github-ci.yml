@@ -4,8 +4,12 @@ on:
   push:
     branches:
       - main
-  push_request:
-    types: [opened]
+  # push_request:
+  #   types: [opened]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   build:
@@ -35,7 +39,7 @@ jobs:
         echo "sha=$SHA" >> $GITHUB_OUTPUT
 
     - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credential@v4
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
         aws-region: us-east-2
