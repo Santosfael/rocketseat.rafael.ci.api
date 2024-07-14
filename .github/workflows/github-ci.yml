@@ -49,12 +49,26 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v2
 
     - name: Build Docker image
+      id: build-docker-image
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         TAG: ${{ steps.generate_tag.outputs.sha }}
       run: |
         docker build -t $REGISTRY/rocketseat-rafael-ci:$TAG .
         docker push $REGISTRY/rocketseat-rafael-ci:$TAG
+        IMAGE=$(echo $REGISTRY/rocketseat-rafael-ci:$TAG)
+        echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+    - name: Deploy to App Runner
+      uses: awslabs/amazon-app-runner-deploy@main
+      with:
+        service: rocketseat-rafael-api
+        image: ${{ steps.build-docker-image.outputs.image }}
+        access-role-arn: ${{ secrets.AWS_APP_RUNNER_ROLE }}
+        region: us-east-2
+        cpu: 1
+        memory: 1
+        port: 3000
 
     # - name: Push image
     #   run: docker push santosfael/rocketseat-ci-api-rafael:${{ steps.generate_tag.outputs.sha }}
