@@ -4,20 +4,17 @@ on:
   push:
     branches:
       - main
-  # push_request:
-  #   types: [opened]
 
 permissions:
   id-token: write
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   build:
     name: 'Build and Push'
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node: [16, 18, 20]
 
     steps:
     - uses: actions/checkout@v4
